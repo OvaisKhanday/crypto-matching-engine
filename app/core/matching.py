@@ -33,7 +33,7 @@ def _emit_trade(symbol, price: Decimal, qty: Decimal, aggressor: Side, maker_id:
     )
 
 def match_order(order: Order, ob: OrderBook) -> List[Trade]:
-    logger.info(f"🔄 Matching order: {order}")
+    logger.info(f"Matching order: {order}")
     trades: List[Trade] = []
     remaining = order.quantity
 
@@ -43,7 +43,7 @@ def match_order(order: Order, ob: OrderBook) -> List[Trade]:
         price_items = list(opposing.items())
     else:
         opposing = ob.bids
-        price_items = list(opposing.items())
+        price_items = list(opposing.items())[::-1]
 
     def price_ok(price: Decimal) -> bool:
         if order.order_type == OrderType.MARKET:
@@ -87,6 +87,6 @@ def match_order(order: Order, ob: OrderBook) -> List[Trade]:
         ob.add_limit_order(rest_order)
 
     if len(trades) > 0:
-        logger.info(f"✅ Trade successful: {trades}")
+        logger.info(f"Trade successful: {trades}")
 
     return trades

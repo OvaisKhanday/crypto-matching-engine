@@ -3,16 +3,18 @@ from decimal import Decimal, getcontext
 from pydantic import BaseModel
 from app.core.order_types import Order, Side, OrderType
 from app.core.order_book import OrderBook
-from app.core.matching import match_order, Trade
+from app.core.matching import match_order
 from app.ws_broadcast import BroadcastManager
 from typing import Dict
 from datetime import datetime
 import asyncio
+import logging
+
+logger = logging.getLogger("matching_engine.matching")
 
 # set decimal precision
 getcontext().prec = 18
 
-# app = FastAPI(title="Matching Engine Prototype")
 router = APIRouter()
 books: Dict[str, OrderBook] = {}
 broadcast = BroadcastManager()
@@ -54,6 +56,7 @@ async def submit_order(o: OrderIn):
                 else:
                     break
         if total_avail < order.quantity:
+            logger.info(f"FOK order killed: {o}")
             return {"status": "killed", "reason": "FOK not fillable"}
 
     trades = match_order(order, book)

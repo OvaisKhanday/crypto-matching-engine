@@ -16,7 +16,7 @@ class OrderBook:
         self.symbol = symbol
         # Ascending order of prices
         # bids: use SortedDict where highest key is best bid
-        self.bids: SortedDict[Decimal, PriceLevel] = SortedDict(lambda x: -x)
+        self.bids: SortedDict[Decimal, PriceLevel] = SortedDict()
         # asks: lowest key is best ask
         self.asks: SortedDict[Decimal, PriceLevel] = SortedDict()
 
@@ -38,7 +38,7 @@ class OrderBook:
         best_ask = None
         if len(self.bids):
             # As orders are sorted in ascending order of prices, highest bid is at the end
-            best_bid = self.bids.peekitem(0)[0]
+            best_bid = self.bids.peekitem(-1)[0]
         if len(self.asks):
             best_ask = self.asks.peekitem(0)[0]
         return best_bid, best_ask
@@ -48,7 +48,7 @@ class OrderBook:
         bids = []
         for price, lvl in list(self.asks.items())[:n]:
             asks.append((str(price), str(lvl.total_qty)))
-        for price, lvl in list(self.bids.items())[n:]:
+        for price, lvl in list(self.bids.items())[-n:]:
             bids.insert(0, (str(price), str(lvl.total_qty)))
         return asks, bids
     

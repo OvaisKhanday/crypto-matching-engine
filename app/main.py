@@ -20,22 +20,23 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger("matching_engine")
-app = FastAPI()
+app = FastAPI(title="Matching Engine Prototype")
+
 
 @app.on_event("startup")
 async def startup_event():
-    logger.info("🚀 Matching Engine API started successfully.")
+    logger.info("Matching Engine API started successfully.")
 
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
     start_time = time.time()
 
-    logger.info(f"📥 Incoming request: {request.method} {request.url}")
+    logger.info(f"Incoming request: {request.method} {request.url}")
 
     try:
         response = await call_next(request)
     except Exception as exc:
-        logger.exception(f"❌ Error during request: {exc}")
+        logger.exception(f"Error during request: {exc}")
         return JSONResponse(status_code=500, content={"detail": "Internal server error"})
 
     process_time = (time.time() - start_time) * 1000
