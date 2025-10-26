@@ -7,7 +7,6 @@ from app.core.matching import match_order
 from app.ws_broadcast import BroadcastManager
 from typing import Dict
 from datetime import datetime
-import asyncio
 import logging
 
 logger = logging.getLogger("matching_engine.matching")
@@ -17,7 +16,8 @@ getcontext().prec = 18
 
 router = APIRouter()
 books: Dict[str, OrderBook] = {}
-broadcast = BroadcastManager()
+trade_broadcast = BroadcastManager()
+data_broadcast = BroadcastManager()
 
 class OrderIn(BaseModel):
     symbol: str
@@ -27,8 +27,7 @@ class OrderIn(BaseModel):
     price: Decimal | None = None
 
 @router.get('/')
-async def testing():
-    print('GET /')
+async def testing_route():
     return {"hello":"world"}
 
 @router.post("/orders")
@@ -62,44 +61,62 @@ async def submit_order(o: OrderIn):
     trades = match_order(order, book)
     # publish trades and BBO
     for t in trades:
-        await broadcast.broadcast_json({"type": "trade", **t.__dict__})
+        await trade_broadcast.broadcast_json({**t.__dict__})
 
+    # broadcast order book depth
+    [asks, bids] = book.top_n(10)
+    asks_bids_depth_of_book = {
+        "type": "depth",
+        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "symbol": book.symbol,
+        "bids": bids,
+        "asks": asks,
+    }
+    await data_broadcast.broadcast_json(asks_bids_depth_of_book)
+
+    # broadcast current BBO
     best_bid, best_ask = book.get_bbo()
-    bbo = {"type": "bbo", "symbol": o.symbol, "best_bid": str(best_bid) if best_bid else None, "best_ask": str(best_ask) if best_ask else None}
-    await broadcast.broadcast_json(bbo)
+    bbo_of_book = {
+        "type": "bbo",
+        "symbol": book.symbol,
+        "best_bid": str(best_bid) if best_bid else None,
+        "best_ask": str(best_ask) if best_ask else None
+    }
+    await data_broadcast.broadcast_json(bbo_of_book)
+
     return {"status": "ok", "trades": [t.__dict__ for t in trades]}
 
-@router.websocket("/ws")
+@router.websocket("/ws/trades")
 async def websocket_endpoint(ws: WebSocket):
-    await broadcast.connect(ws)
+    await trade_broadcast.connect(ws)
     try:
         while True:
             msg = await ws.receive_text()
             # echo or ignore client messages; clients receive broadcasts
             await ws.send_json({"message": "ok"})
     except WebSocketDisconnect:
-        await broadcast.disconnect(ws)
-
-active_market_sockets = set()
-@router.websocket("/ws/market")
-async def market_data_ws(ws: WebSocket):
-    await ws.accept()
-    active_market_sockets.add(ws)
-    await ws.send_text("You are Connected to Market Feed")
-    try:
-        while True:
-            # Prepare market data snapshot
-            for book in books.values():
-                [asks, bids] = book.top_n(10)
-                snapshot = {
-                    "timestamp": datetime.utcnow().isoformat() + "Z",
-                    "symbol": book.symbol,
-                    "bids": bids,
-                    "asks": asks,
-                }
-                await ws.send_json(snapshot)
-            await asyncio.sleep(1)  # Update every second
+        await trade_broadcast.disconnect(ws)
     except Exception:
         pass
     finally:
-        active_market_sockets.remove(ws)
+        trade_broadcast.disconnect(ws)
+
+@router.websocket("/ws/market")
+async def market_data_ws(ws: WebSocket):
+    """
+    Market Data Dissemination API (e.g., WebSocket) to stream real-time market data from the engine. This feed includes:
+        - Current BBO (Best Bid & Offer).
+        - Order book depth (e.g., top 10 levels of bids and asks).
+    """
+    await data_broadcast.connect(ws)
+    try:
+        while True:
+            msg = await ws.receive_text()
+            # echo or ignore client messages; clients receive broadcasts
+            await ws.send_json({"message": "ok"})
+    except WebSocketDisconnect:
+        await data_broadcast.disconnect(ws)
+    except Exception:
+        pass
+    finally:
+        data_broadcast.disconnect(ws)

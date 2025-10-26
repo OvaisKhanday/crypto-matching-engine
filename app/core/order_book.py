@@ -51,19 +51,3 @@ class OrderBook:
         for price, lvl in list(self.bids.items())[-n:]:
             bids.insert(0, (str(price), str(lvl.total_qty)))
         return asks, bids
-    
-    def get_depth(self, side: str, levels: int = 10):
-        """
-        Returns top N price levels for the given side (buy/sell).
-        Returns list of tuples: (price, total_quantity)
-        """
-        book = self.bids if side == "buy" else self.asks
-        depth = []
-        count = 0
-        for price, orders in book.items():
-            total_qty = sum(o.quantity for o in orders)
-            depth.append((price, total_qty))
-            count += 1
-            if count >= levels:
-                break
-        return depth

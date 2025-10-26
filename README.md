@@ -37,8 +37,8 @@ Endpoints:
 }
 ```
 
-- WebSocket `/ws` -> subscribe to BBO and trade messages
-- WebSocket `/ws/market` -> Market Data Dissemination. This feed should include:
+- WebSocket `/ws/trades` -> successful trade messages
+- WebSocket `/ws/market` -> Market Data Dissemination. This feed includes:
   - Current BBO
   - Order book depth (e.g., top 10 levels of bids and asks)
 
@@ -74,7 +74,22 @@ node client.js
 }
 ```
 
-- `/ws`
+- `/ws/trades`
+
+```json
+{
+  "trade_id": "1c61dd7c-faf6-461e-8675-ef0d55fd2699",
+  "timestamp": "2025-10-26T12:58:02.578019Z",
+  "symbol": "BTC-USDT",
+  "price": "35034.45",
+  "quantity": "181.74",
+  "aggressor_side": "sell",
+  "maker_order_id": "fd35fd5a-57fd-4e50-8c21-359e500053da",
+  "taker_order_id": "7fc7135e-b459-49f3-aa05-0e18b219da81"
+}
+```
+
+- `/ws/market`
 
 ```json
 {
@@ -83,30 +98,9 @@ node client.js
     "best_bid":"784.26",
     "best_ask":"16020.53"
 }
-{
-  "type": "bbo",
-  "symbol": "BTC-USDT",
-  "best_bid": "35034.45",
-  "best_ask": "80584.28"
-}
 
 {
-    "type":"trade",
-    "trade_id":"1c61dd7c-faf6-461e-8675-ef0d55fd2699",
-    "timestamp":"2025-10-26T12:58:02.578019Z",
-    "symbol":"BTC-USDT",
-    "price":"35034.45",
-    "quantity":"181.74",
-    "aggressor_side":"sell",
-    "maker_order_id":"fd35fd5a-57fd-4e50-8c21-359e500053da",
-    "taker_order_id":"7fc7135e-b459-49f3-aa05-0e18b219da81"
-}
-```
-
-- `/ws/market`
-
-```json
-{
+  "type": "depth",
   "timestamp": "2025-10-26T13:00:08.481831Z",
   "symbol": "XRP-USDT",
   "bids": [],
