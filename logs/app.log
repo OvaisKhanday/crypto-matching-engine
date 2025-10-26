@@ -1,0 +1,62 @@
+2025-10-26 14:38:40,308 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 14:38:42,737 | INFO | matching_engine | 📥 Incoming request: GET http://localhost:8000/
+2025-10-26 14:38:42,738 | INFO | matching_engine | 📤 Response 200 (1.53 ms)
+2025-10-26 14:38:54,794 | INFO | matching_engine | 📥 Incoming request: GET http://localhost:8000/
+2025-10-26 14:38:54,796 | INFO | matching_engine | 📤 Response 200 (1.68 ms)
+2025-10-26 14:39:11,520 | INFO | matching_engine | 📥 Incoming request: POST http://localhost:8000/orders
+2025-10-26 14:39:11,521 | INFO | matching_engine.matching | 🔄 Matching order: Order(symbol='BTC-USDT', side=<Side.SELL: 'sell'>, order_type=<OrderType.LIMIT: 'limit'>, quantity=Decimal('10'), price=Decimal('900'), timestamp=datetime.datetime(2025, 10, 26, 9, 9, 11, 521190), id='573e5534-1aae-466b-8c3f-c15a037de93d')
+2025-10-26 14:39:11,522 | INFO | matching_engine.matching | ✅ Order matched successfully: Order(symbol='BTC-USDT', side=<Side.SELL: 'sell'>, order_type=<OrderType.LIMIT: 'limit'>, quantity=Decimal('10'), price=Decimal('900'), timestamp=datetime.datetime(2025, 10, 26, 9, 9, 11, 521190), id='573e5534-1aae-466b-8c3f-c15a037de93d')
+2025-10-26 14:39:11,522 | INFO | matching_engine | 📤 Response 200 (2.00 ms)
+2025-10-26 14:39:30,690 | INFO | matching_engine | 📥 Incoming request: POST http://localhost:8000/orders
+2025-10-26 14:39:30,722 | INFO | matching_engine.matching | 🔄 Matching order: Order(symbol='BTC-USDT', side=<Side.SELL: 'sell'>, order_type=<OrderType.LIMIT: 'limit'>, quantity=Decimal('10'), price=Decimal('900'), timestamp=datetime.datetime(2025, 10, 26, 9, 9, 30, 722956), id='ec745dc4-2c7b-432a-8b07-243efa02e679')
+2025-10-26 14:39:30,722 | INFO | matching_engine.matching | ✅ Order matched successfully: Order(symbol='BTC-USDT', side=<Side.SELL: 'sell'>, order_type=<OrderType.LIMIT: 'limit'>, quantity=Decimal('10'), price=Decimal('900'), timestamp=datetime.datetime(2025, 10, 26, 9, 9, 30, 722956), id='ec745dc4-2c7b-432a-8b07-243efa02e679')
+2025-10-26 14:39:30,723 | INFO | matching_engine | 📤 Response 200 (33.01 ms)
+2025-10-26 14:39:35,583 | INFO | matching_engine | 📥 Incoming request: POST http://localhost:8000/orders
+2025-10-26 14:39:35,584 | INFO | matching_engine.matching | 🔄 Matching order: Order(symbol='BTC-USDT', side=<Side.BUY: 'buy'>, order_type=<OrderType.LIMIT: 'limit'>, quantity=Decimal('10'), price=Decimal('900'), timestamp=datetime.datetime(2025, 10, 26, 9, 9, 35, 584846), id='55d4cc8d-7288-4b45-9937-3ac341148a47')
+2025-10-26 14:39:35,585 | INFO | matching_engine.matching | ✅ Order matched successfully: Order(symbol='BTC-USDT', side=<Side.BUY: 'buy'>, order_type=<OrderType.LIMIT: 'limit'>, quantity=Decimal('10'), price=Decimal('900'), timestamp=datetime.datetime(2025, 10, 26, 9, 9, 35, 584846), id='55d4cc8d-7288-4b45-9937-3ac341148a47')
+2025-10-26 14:39:35,585 | INFO | matching_engine | 📤 Response 200 (2.05 ms)
+2025-10-26 14:40:11,656 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 14:50:03,329 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 15:21:26,304 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 15:37:54,456 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 15:38:01,836 | INFO | matching_engine | 📥 Incoming request: POST http://localhost:8000/orders
+2025-10-26 15:38:01,838 | INFO | matching_engine.matching | 🔄 Matching order: Order(symbol='BTC-USDT', side=<Side.BUY: 'buy'>, order_type=<OrderType.LIMIT: 'limit'>, quantity=Decimal('10'), price=Decimal('900'), timestamp=datetime.datetime(2025, 10, 26, 10, 8, 1, 838317), id='56186609-ffff-481e-ba37-e18b9b57130e')
+2025-10-26 15:38:01,839 | INFO | matching_engine | 📤 Response 200 (3.43 ms)
+2025-10-26 15:38:05,859 | INFO | matching_engine | 📥 Incoming request: POST http://localhost:8000/orders
+2025-10-26 15:38:05,862 | INFO | matching_engine.matching | 🔄 Matching order: Order(symbol='BTC-USDT', side=<Side.SELL: 'sell'>, order_type=<OrderType.LIMIT: 'limit'>, quantity=Decimal('10'), price=Decimal('900'), timestamp=datetime.datetime(2025, 10, 26, 10, 8, 5, 861863), id='bfbbb615-a6c1-49ce-87a6-b8c47bd3ce48')
+2025-10-26 15:38:05,863 | INFO | matching_engine.matching | ✅ Trade successful: [Trade(trade_id='6f90d8a8-0779-42c2-a189-be4286227bfb', timestamp='2025-10-26T10:08:05.863858Z', symbol='BTC-USDT', price='900', quantity='10', aggressor_side='sell', maker_order_id='56186609-ffff-481e-ba37-e18b9b57130e', taker_order_id='bfbbb615-a6c1-49ce-87a6-b8c47bd3ce48')]
+2025-10-26 15:38:05,864 | INFO | matching_engine | 📤 Response 200 (4.99 ms)
+2025-10-26 15:39:25,196 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 15:45:29,515 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 15:47:16,142 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 15:47:31,037 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 15:47:57,967 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 15:48:07,213 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 15:48:13,388 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 15:48:53,224 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 15:49:20,436 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 15:49:27,383 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 15:49:33,400 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 15:52:28,337 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 15:55:19,607 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 15:55:29,169 | INFO | matching_engine | 📥 Incoming request: POST http://localhost:8000/orders
+2025-10-26 15:55:29,170 | INFO | matching_engine.matching | 🔄 Matching order: Order(symbol='BTC-USDT', side=<Side.SELL: 'sell'>, order_type=<OrderType.LIMIT: 'limit'>, quantity=Decimal('10'), price=Decimal('900'), timestamp=datetime.datetime(2025, 10, 26, 10, 25, 29, 170478), id='97a891ca-585b-48fd-a273-0b14c5e21d77')
+2025-10-26 15:55:29,171 | INFO | matching_engine | 📤 Response 200 (2.02 ms)
+2025-10-26 15:56:02,605 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 15:56:06,396 | INFO | matching_engine | 📥 Incoming request: POST http://localhost:8000/orders
+2025-10-26 15:56:06,398 | INFO | matching_engine.matching | 🔄 Matching order: Order(symbol='BTC-USDT', side=<Side.SELL: 'sell'>, order_type=<OrderType.LIMIT: 'limit'>, quantity=Decimal('10'), price=Decimal('900'), timestamp=datetime.datetime(2025, 10, 26, 10, 26, 6, 398316), id='07bc028d-9808-4910-b362-e4ab3a76bf5c')
+2025-10-26 15:56:06,399 | INFO | matching_engine | 📤 Response 200 (2.92 ms)
+2025-10-26 15:56:10,665 | INFO | matching_engine | 📥 Incoming request: POST http://localhost:8000/orders
+2025-10-26 15:56:10,666 | INFO | matching_engine.matching | 🔄 Matching order: Order(symbol='BTC-USDT', side=<Side.BUY: 'buy'>, order_type=<OrderType.LIMIT: 'limit'>, quantity=Decimal('10'), price=Decimal('900'), timestamp=datetime.datetime(2025, 10, 26, 10, 26, 10, 666946), id='ab6d0907-9d9b-49dd-83aa-5d35bc3a08e5')
+2025-10-26 15:56:10,666 | INFO | matching_engine.matching | ✅ Trade successful: [Trade(trade_id='853e03e4-81ae-4c28-a866-df0637a7a8f8', timestamp='2025-10-26T10:26:10.666946Z', symbol='BTC-USDT', price='900', quantity='10', aggressor_side='buy', maker_order_id='07bc028d-9808-4910-b362-e4ab3a76bf5c', taker_order_id='ab6d0907-9d9b-49dd-83aa-5d35bc3a08e5')]
+2025-10-26 15:56:10,667 | INFO | matching_engine | 📤 Response 200 (2.00 ms)
+2025-10-26 15:56:59,654 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 15:58:26,007 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
+2025-10-26 15:58:28,714 | INFO | matching_engine | 📥 Incoming request: POST http://localhost:8000/orders
+2025-10-26 15:58:28,716 | INFO | matching_engine.matching | 🔄 Matching order: Order(symbol='BTC-USDT', side=<Side.BUY: 'buy'>, order_type=<OrderType.LIMIT: 'limit'>, quantity=Decimal('10'), price=Decimal('900'), timestamp=datetime.datetime(2025, 10, 26, 10, 28, 28, 716440), id='78b97b91-5018-43c3-a6cd-9e5fa1335118')
+2025-10-26 15:58:28,716 | INFO | matching_engine | 📤 Response 200 (1.99 ms)
+2025-10-26 15:58:34,971 | INFO | matching_engine | 📥 Incoming request: POST http://localhost:8000/orders
+2025-10-26 15:58:34,972 | INFO | matching_engine.matching | 🔄 Matching order: Order(symbol='BTC-USDT', side=<Side.SELL: 'sell'>, order_type=<OrderType.LIMIT: 'limit'>, quantity=Decimal('10'), price=Decimal('900'), timestamp=datetime.datetime(2025, 10, 26, 10, 28, 34, 972436), id='8ad252d2-bd0b-4d2b-819b-89d87404eace')
+2025-10-26 15:58:34,973 | INFO | matching_engine.matching | ✅ Trade successful: [Trade(trade_id='98168ce0-3aef-4eab-b82b-63302e3ded06', timestamp='2025-10-26T10:28:34.973435Z', symbol='BTC-USDT', price='900', quantity='10', aggressor_side='sell', maker_order_id='78b97b91-5018-43c3-a6cd-9e5fa1335118', taker_order_id='8ad252d2-bd0b-4d2b-819b-89d87404eace')]
+2025-10-26 15:58:34,973 | INFO | matching_engine | 📤 Response 200 (2.00 ms)
+2025-10-26 15:59:15,628 | INFO | matching_engine | 🚀 Matching Engine API started successfully.
