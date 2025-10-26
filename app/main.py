@@ -40,7 +40,7 @@ async def log_requests(request: Request, call_next):
         return JSONResponse(status_code=500, content={"detail": "Internal server error"})
 
     process_time = (time.time() - start_time) * 1000
-    logger.info(f"📤 Response {response.status_code} ({process_time:.2f} ms)")
+    logger.info(f"Response {response.status_code} ({process_time:.2f} ms)")
     return response
 
 app.include_router(api.router)
