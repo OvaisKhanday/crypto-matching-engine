@@ -15,9 +15,9 @@ logger = logging.getLogger("matching_engine.matching")
 getcontext().prec = 18
 
 router = APIRouter()
-books: Dict[str, OrderBook] = {}
-trade_broadcast = BroadcastManager()
-data_broadcast = BroadcastManager()
+books: Dict[str, OrderBook] = {} # Stores all books, each for individual symbol
+trade_broadcast = BroadcastManager() # Broadcast only successful trades
+market_data_broadcast = BroadcastManager() # Broadcast BBO and depths of different Symbols
 
 class OrderIn(BaseModel):
     symbol: str
@@ -30,7 +30,7 @@ class OrderIn(BaseModel):
 async def testing_route():
     return {"hello":"world"}
 
-@router.post("/orders")
+@router.post("/orders") # Route for handling orders
 async def submit_order(o: OrderIn):
     # simple validation
     if o.order_type == OrderType.LIMIT and o.price is None:
@@ -39,6 +39,7 @@ async def submit_order(o: OrderIn):
         raise HTTPException(status_code=400, detail="Quantity must be > 0")
     book = books.setdefault(o.symbol, OrderBook(o.symbol))
     order = Order(symbol=o.symbol, side=o.side, order_type=o.order_type, quantity=o.quantity, price=o.price)
+
     # handle FOK pre-check
     if o.order_type == OrderType.FOK:
         total_avail = Decimal(0)
@@ -59,7 +60,7 @@ async def submit_order(o: OrderIn):
             return {"status": "killed", "reason": "FOK not fillable"}
 
     trades = match_order(order, book)
-    # publish trades and BBO
+    # publish trades
     for t in trades:
         await trade_broadcast.broadcast_json({**t.__dict__})
 
@@ -72,7 +73,7 @@ async def submit_order(o: OrderIn):
         "bids": bids,
         "asks": asks,
     }
-    await data_broadcast.broadcast_json(asks_bids_depth_of_book)
+    await market_data_broadcast.broadcast_json(asks_bids_depth_of_book)
 
     # broadcast current BBO
     best_bid, best_ask = book.get_bbo()
@@ -82,10 +83,11 @@ async def submit_order(o: OrderIn):
         "best_bid": str(best_bid) if best_bid else None,
         "best_ask": str(best_ask) if best_ask else None
     }
-    await data_broadcast.broadcast_json(bbo_of_book)
+    await market_data_broadcast.broadcast_json(bbo_of_book)
 
     return {"status": "ok", "trades": [t.__dict__ for t in trades]}
 
+# Subscribe for trade events
 @router.websocket("/ws/trades")
 async def websocket_endpoint(ws: WebSocket):
     await trade_broadcast.connect(ws)
@@ -101,6 +103,7 @@ async def websocket_endpoint(ws: WebSocket):
     finally:
         trade_broadcast.disconnect(ws)
 
+# Subscribe for BBO and Symbol depth levels
 @router.websocket("/ws/market")
 async def market_data_ws(ws: WebSocket):
     """
@@ -108,15 +111,15 @@ async def market_data_ws(ws: WebSocket):
         - Current BBO (Best Bid & Offer).
         - Order book depth (e.g., top 10 levels of bids and asks).
     """
-    await data_broadcast.connect(ws)
+    await market_data_broadcast.connect(ws)
     try:
         while True:
             msg = await ws.receive_text()
             # echo or ignore client messages; clients receive broadcasts
             await ws.send_json({"message": "ok"})
     except WebSocketDisconnect:
-        await data_broadcast.disconnect(ws)
+        await market_data_broadcast.disconnect(ws)
     except Exception:
         pass
     finally:
-        data_broadcast.disconnect(ws)
+        market_data_broadcast.disconnect(ws)

@@ -33,6 +33,9 @@ def _emit_trade(symbol, price: Decimal, qty: Decimal, aggressor: Side, maker_id:
     )
 
 def match_order(order: Order, ob: OrderBook) -> List[Trade]:
+    """
+    Does the heavy work of matching the trades. This is the main functional component of this system.
+    """
     logger.info(f"Matching order: {order}")
     trades: List[Trade] = []
     remaining = order.quantity
