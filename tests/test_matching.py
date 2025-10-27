@@ -24,6 +24,40 @@ def test_limit_rest_and_bbo():
     assert best_bid == Decimal('50000')
     assert best_ask == Decimal('60000')
 
+def test_top_n():
+    """
+    Best Bid and Offer
+    """
+    ob = OrderBook("BTC-USDT")
+    o1 = Order("BTC-USDT", Side.SELL, OrderType.LIMIT, Decimal('2'), Decimal('300'))
+    o2 = Order("BTC-USDT", Side.SELL, OrderType.LIMIT, Decimal('11'), Decimal('200'))
+    o3 = Order("BTC-USDT", Side.SELL, OrderType.LIMIT, Decimal('11'), Decimal('400'))
+    o4 = Order("BTC-USDT", Side.SELL, OrderType.LIMIT, Decimal('18'), Decimal('500'))
+    o5 = Order("BTC-USDT", Side.SELL, OrderType.LIMIT, Decimal('11'), Decimal('600'))
+    o6 = Order("BTC-USDT", Side.BUY, OrderType.LIMIT, Decimal('1'), Decimal('100'))
+    o7 = Order("BTC-USDT", Side.BUY, OrderType.LIMIT, Decimal('17'), Decimal('80'))
+    o8 = Order("BTC-USDT", Side.BUY, OrderType.LIMIT, Decimal('17'), Decimal('85'))
+    o9 = Order("BTC-USDT", Side.BUY, OrderType.LIMIT, Decimal('17'), Decimal('75'))
+    o10 = Order("BTC-USDT", Side.BUY, OrderType.LIMIT, Decimal('17'), Decimal('54'))
+    o11 = Order("BTC-USDT", Side.BUY, OrderType.LIMIT, Decimal('17'), Decimal('43'))
+    o12 = Order("BTC-USDT", Side.BUY, OrderType.LIMIT, Decimal('10'), Decimal('70'))
+    ob.add_limit_order(o1)
+    ob.add_limit_order(o2)
+    ob.add_limit_order(o3)
+    ob.add_limit_order(o4)
+    ob.add_limit_order(o5)
+    ob.add_limit_order(o6)
+    ob.add_limit_order(o7)
+    ob.add_limit_order(o8)
+    ob.add_limit_order(o9)
+    ob.add_limit_order(o10)
+    ob.add_limit_order(o11)
+    ob.add_limit_order(o12)
+
+    asks, bids = ob.top_n(2)
+    assert asks == [('200', '11'),('300','2')]
+    assert bids == [('100', '1'),('85', '17')]
+
 def test_market_consumes_levels():
     """
     ASKS[quantity, price]: [1, 100],[1.5, 200]\n
