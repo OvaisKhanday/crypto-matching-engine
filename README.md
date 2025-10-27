@@ -4,6 +4,8 @@
 
 This is a high-performance cryptocurrency matching engine. This engine implements core trading functionalities based on REG NMS-inspired principles of price-time priority and internal order protection. Additionally, the engine generates its own stream of trade execution data.
 
+![Matching Engine Demo](./static/demo.gif)
+
 - FastAPI (HTTP + WebSocket)
 - SortedDict for orderbook price levels
 - asyncio-friendly WebSocket broadcast manager
